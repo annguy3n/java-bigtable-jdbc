@@ -329,73 +329,63 @@ public class BigtableResultSet implements java.sql.ResultSet {
   @Override
   public String getString(String columnLabel) throws SQLException {
     checkClosed();
-    int columnIndex = bigtableResultSet.getMetadata().getColumnIndex(columnLabel);
-    String value = getString(columnIndex);
-    lastValueWasNull = (value == null);
-    return value;
+    try {
+      int columnIndex = bigtableResultSet.getMetadata().getColumnIndex(columnLabel);
+      String value = getString(columnIndex);
+      lastValueWasNull = (value == null);
+      return value;
+    } catch (IllegalArgumentException e) {
+      throw new SQLException(e.getMessage(), e);
+    }
   }
 
   @Override
   public boolean getBoolean(String columnLabel) throws SQLException {
     checkClosed();
     int columnIndex = bigtableResultSet.getMetadata().getColumnIndex(columnLabel);
-    Boolean value = getBoolean(columnIndex);
-    lastValueWasNull = (value == null);
-    return value != null && value;
+    return getBoolean(columnIndex);
   }
 
   @Override
   public byte getByte(String columnLabel) throws SQLException {
     checkClosed();
     int columnIndex = bigtableResultSet.getMetadata().getColumnIndex(columnLabel);
-    Byte value = (byte) getLong(columnIndex);
-    lastValueWasNull = (value == null);
-    return value != null ? value : 0;
+    return getByte(columnIndex);
   }
 
   @Override
   public short getShort(String columnLabel) throws SQLException {
     checkClosed();
     int columnIndex = bigtableResultSet.getMetadata().getColumnIndex(columnLabel);
-    Short value = (short) getLong(columnIndex);
-    lastValueWasNull = (value == null);
-    return value != null ? value : 0;
+    return getShort(columnIndex);
   }
 
   @Override
   public int getInt(String columnLabel) throws SQLException {
     checkClosed();
     int columnIndex = bigtableResultSet.getMetadata().getColumnIndex(columnLabel);
-    Integer value = Math.toIntExact(getLong(columnIndex));
-    lastValueWasNull = (value == null);
-    return value != null ? value : 0;
+    return getInt(columnIndex);
   }
 
   @Override
   public long getLong(String columnLabel) throws SQLException {
     checkClosed();
     int columnIndex = bigtableResultSet.getMetadata().getColumnIndex(columnLabel);
-    Long value = getLong(columnIndex);
-    lastValueWasNull = (value == null);
-    return value != null ? value : 0L;
+    return getLong(columnIndex);
   }
 
   @Override
   public float getFloat(String columnLabel) throws SQLException {
     checkClosed();
     int columnIndex = bigtableResultSet.getMetadata().getColumnIndex(columnLabel);
-    Float value = getFloat(columnIndex);
-    lastValueWasNull = (value == null);
-    return value != null ? value : 0L;
+    return getFloat(columnIndex);
   }
 
   @Override
   public double getDouble(String columnLabel) throws SQLException {
     checkClosed();
     int columnIndex = bigtableResultSet.getMetadata().getColumnIndex(columnLabel);
-    Double value = getDouble(columnIndex);
-    lastValueWasNull = (value == null);
-    return value != null ? value : 0d;
+    return getDouble(columnIndex);
   }
 
   @Override
@@ -414,13 +404,7 @@ public class BigtableResultSet implements java.sql.ResultSet {
   public Date getDate(String columnLabel) throws SQLException {
     checkClosed();
     int columnIndex = bigtableResultSet.getMetadata().getColumnIndex(columnLabel);
-    com.google.cloud.Date cloudDate = com.google.cloud.Date.fromJavaUtilDate(getDate(columnIndex));
-    if (cloudDate == null) {
-      lastValueWasNull = true;
-      return null;
-    }
-    lastValueWasNull = false;
-    return java.sql.Date.valueOf(cloudDate.toString());
+    return getDate(columnIndex);
   }
 
   @Override
@@ -432,13 +416,7 @@ public class BigtableResultSet implements java.sql.ResultSet {
   public Timestamp getTimestamp(String columnLabel) throws SQLException {
     checkClosed();
     int columnIndex = bigtableResultSet.getMetadata().getColumnIndex(columnLabel);
-    Timestamp instant = getTimestamp(columnIndex);
-    if (instant == null) {
-      lastValueWasNull = true;
-      return null;
-    }
-    lastValueWasNull = false;
-    return instant;
+    return getTimestamp(columnIndex);
   }
 
   @Override

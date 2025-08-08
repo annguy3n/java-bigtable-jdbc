@@ -197,7 +197,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.1.0</version>
         <configuration>
-          <mainClass>com.google.cloud.bigtable.jdbc.example.JdbcExample</mainClass>
+          <mainClass>JdbcExample</mainClass>
           <arguments>
             <argument>${project.build.directory}/bigtable-jdbc-${project.version}-shaded.jar</argument>
           </arguments>
