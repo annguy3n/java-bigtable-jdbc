@@ -18,10 +18,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import java.net.URISyntaxException;
-import org.junit.Test;
+
 import com.google.cloud.bigtable.jdbc.util.BigtableJdbcUrlParser.BigtableJdbcUrl;
 import com.google.common.collect.ImmutableMap;
+import java.net.URISyntaxException;
+import org.junit.Test;
 
 public class BigtableJdbcUrlParserTest {
 

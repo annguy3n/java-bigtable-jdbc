@@ -33,3 +33,34 @@ public class Main {
   }
 }
 ```
+## Running the Example
+
+### Prerequisites
+
+* Java 8 or higher
+* Maven 3.2.5 or higher
+* A Google Cloud project with the Bigtable API enabled
+* A Bigtable instance and table
+
+### Steps
+
+1. **Clone the repository:**
+
+    ```bash
+    git clone https://github.com/GoogleCloudPlatform/java-bigtable-jdbc.git
+    cd java-bigtable-jdbc
+    ```
+
+2. **Build the project:**
+
+    ```bash
+    mvn clean package
+    ```
+
+3. **Run the example:**
+
+    Replace the placeholder values with your actual project ID, instance ID, table name, and row key.
+
+    ```bash
+    mvn exec:java -Dexec.mainClass="com.google.cloud.bigtable.jdbc.example.JdbcExample" -Dexec.args="[PROJECT_ID] [INSTANCE_ID] [TABLE_NAME] [ROW_KEY]"
+    ```

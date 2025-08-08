@@ -220,8 +220,7 @@ public class BigtableConnectionTest {
     assertThrows(
         SQLException.class,
         () -> {
-          new BigtableConnection(
-              "jdbc:bigtable:/projects/test-project", properties, null);
+          new BigtableConnection("jdbc:bigtable:/projects/test-project", properties, null);
         });
   }
 

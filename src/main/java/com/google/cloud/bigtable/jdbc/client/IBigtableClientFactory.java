@@ -14,13 +14,11 @@
 
 package com.google.cloud.bigtable.jdbc.client;
 
-import java.io.IOException;
 import com.google.cloud.bigtable.data.v2.BigtableDataClient;
+import java.io.IOException;
 
-/**
- * The factory is responsible for the instantiation of the BigtableDataClient.
- */
+/** The factory is responsible for the instantiation of the BigtableDataClient. */
 public interface IBigtableClientFactory {
-  BigtableDataClient createBigtableDataClient(String projectId, String instanceId,
-      String appProfileId) throws IOException;
+  BigtableDataClient createBigtableDataClient(
+      String projectId, String instanceId, String appProfileId) throws IOException;
 }
