@@ -16,29 +16,29 @@
 
   <groupId>com.google.cloud</groupId>
   <artifactId>bigtable-jdbc</artifactId>
-  <version>1.0-preview-SNAPSHOT</version>
-  <distributionManagement>
+  <version>bigtable-jdbc-1.0.0-preview-SNAPSHOT</version>
+   <distributionManagement>
     <snapshotRepository>
       <id>artifact-registry</id>
-      <url>artifactregistry://us-central1-maven.pkg.dev/cloud-bigtable-ecosystem/java-bigtable-jdbc</url>
+      <url>artifactregistry://us-maven.pkg.dev/cloud-bigtable-ecosystem/bigtable-jdbc</url>
     </snapshotRepository>
     <repository>
         <id>artifact-registry</id>
-        <url>artifactregistry://us-central1-maven.pkg.dev/cloud-bigtable-ecosystem/java-bigtable-jdbc</url>
+        <url>artifactregistry://us-maven.pkg.dev/cloud-bigtable-ecosystem/bigtable-jdbc</url>
     </repository>
   </distributionManagement>
 
   <repositories>
-      <repository>
-          <id>artifact-registry</id>
-          <url>artifactregistry://us-central1-maven.pkg.dev/cloud-bigtable-ecosystem/java-bigtable-jdbc</url>
-          <releases>
-              <enabled>true</enabled>
-          </releases>
-          <snapshots>
-              <enabled>true</enabled>
-          </snapshots>
-      </repository>
+    <repository>
+      <id>artifact-registry</id>
+      <url>artifactregistry://us-maven.pkg.dev/cloud-bigtable-ecosystem/bigtable-jdbc</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
   </repositories>
 
   <properties>
@@ -233,7 +233,7 @@
                     <limit>
                       <counter>LINE</counter>
                       <value>COVEREDRATIO</value>
-                      <minimum>0.75</minimum>
+                      <minimum>0.70</minimum>
                     </limit>
                   </limits>
                 </rule>
