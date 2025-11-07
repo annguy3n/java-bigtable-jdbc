@@ -16,18 +16,33 @@
 
 package com.google.cloud.bigtable.jdbc.client;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
 import com.google.api.gax.core.FixedCredentialsProvider;
 import com.google.api.gax.rpc.FixedHeaderProvider;
 import com.google.auth.Credentials;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.bigtable.data.v2.BigtableDataClient;
 import com.google.cloud.bigtable.data.v2.BigtableDataSettings;
-import java.io.IOException;
+import com.google.cloud.bigtable.data.v2.stub.metrics.NoopMetricsProvider;
 
 public class BigtableClientFactoryImpl implements IBigtableClientFactory {
   private Credentials credentials;
+  private static final List<String> SCOPES =
+      Arrays.asList("https-www.googleapis.com/auth/cloud-platform",
+          "https-www.googleapis.com/auth/bigtable.admin",
+          "https-www.googleapis.com/auth/bigtable.data.readonly");
 
-  public BigtableClientFactoryImpl() {}
+  public BigtableClientFactoryImpl() throws IOException {
+    this.credentials = GoogleCredentials.getApplicationDefault();
+  }
 
   public BigtableClientFactoryImpl(Credentials credentials) {
     this.credentials = credentials;
@@ -44,9 +59,8 @@ public class BigtableClientFactoryImpl implements IBigtableClientFactory {
     return GoogleCredentials.getApplicationDefault();
   }
 
-  public BigtableDataClient createBigtableDataClient(
-      String projectId, String instanceId, String appProfileId, String host, int port)
-      throws IOException {
+  public BigtableDataClient createBigtableDataClient(String projectId, String instanceId,
+      String appProfileId, String host, int port) throws IOException {
     BigtableDataSettings.Builder builder;
     if (host != null && (host.equals("localhost") || host.equals("127.0.0.1")) && port != -1) {
       builder = BigtableDataSettings.newBuilderForEmulator(port);
@@ -61,9 +75,9 @@ public class BigtableClientFactoryImpl implements IBigtableClientFactory {
       builder.setAppProfileId(appProfileId);
     }
 
-    builder
-        .stubSettings()
-        .setHeaderProvider(FixedHeaderProvider.create("user-agent", "bigtable-jdbc/1.0.0"));
+    builder.stubSettings()
+        .setHeaderProvider(FixedHeaderProvider.create("user-agent", "bigtable-jdbc/1.0.0"))
+        .setMetricsProvider(NoopMetricsProvider.INSTANCE);
 
     // Known issue: BigtableDataClient cannot now whether a connection is established unless
     // a table name is specified. The check would leverage `sampleRowKeys(tableId)`, which will
