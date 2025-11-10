@@ -29,14 +29,15 @@ import com.google.auth.Credentials;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.bigtable.data.v2.BigtableDataClient;
 import com.google.cloud.bigtable.data.v2.BigtableDataSettings;
+import com.google.cloud.bigtable.data.v2.stub.EnhancedBigtableStubSettings;
 import com.google.cloud.bigtable.data.v2.stub.metrics.NoopMetricsProvider;
 
 public class BigtableClientFactoryImpl implements IBigtableClientFactory {
   private final Credentials credentials;
   private static final List<String> SCOPES =
-      Arrays.asList("https-www.googleapis.com/auth/cloud-platform",
-          "https-www.googleapis.com/auth/bigtable.admin",
-          "https-www.googleapis.com/auth/bigtable.data.readonly");
+      Arrays.asList("https://www.googleapis.com/auth/cloud-platform",
+          "https://www.googleapis.com/auth/bigtable.admin",
+          "https://www.googleapis.com/auth/bigtable.data.readonly");
 
   public BigtableClientFactoryImpl() throws IOException {
     this.credentials = GoogleCredentials.getApplicationDefault();
@@ -104,7 +105,9 @@ public class BigtableClientFactoryImpl implements IBigtableClientFactory {
       builder.setAppProfileId(appProfileId);
     }
 
-    builder.stubSettings()
+    builder.stubSettings().setRefreshingChannel(false)
+        .setTransportChannelProvider(EnhancedBigtableStubSettings
+            .defaultGrpcTransportProviderBuilder().setPoolSize(10).build())
         .setHeaderProvider(FixedHeaderProvider.create("user-agent", "bigtable-jdbc/1.0.0"))
         .setMetricsProvider(NoopMetricsProvider.INSTANCE);
 

@@ -34,6 +34,7 @@ import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -140,9 +141,13 @@ public class BigtableResultSet implements java.sql.ResultSet {
 
   @Override
   public boolean next() throws SQLException {
+    System.out.println("----next-------" + LocalDateTime.now());
     checkClosed();
+    System.out.println("----checkClosed-------" + LocalDateTime.now());
     hasMoved = true;
+    System.out.println("----btDataResultSet check-------" + LocalDateTime.now());
     boolean hasNext = btDataResultSet.next();
+    System.out.println("----hasNext-------" + LocalDateTime.now());
     isAfterLast = !hasNext;
     return hasNext;
   }

@@ -1,24 +1,23 @@
 /*
  * Copyright 2025 Google LLC
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
- *      https://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDateTime;
 
 /*
  * To run: mvn exec:java -Dexec.mainClass="JdbcExample"
@@ -39,7 +38,7 @@ public class JdbcExample {
 
     String url = String.format("jdbc:bigtable:/projects/%s/instances/%s", projectId, instanceId);
 
-    System.out.println("Connecting to " + url);
+    System.out.println(LocalDateTime.now() + "Connecting to " + url);
 
     try {
       // Load the Bigtable JDBC driver
@@ -52,34 +51,64 @@ public class JdbcExample {
 
     String sql = "SELECT * FROM " + tableName + " WHERE _key = ?";
 
-    try (Connection connection = DriverManager.getConnection(url);
-        PreparedStatement statement = connection.prepareStatement(sql)) {
+    Statement statement = null;
+    ResultSet rs = null;
+    Connection connection = null;
+    try {
+      connection = DriverManager.getConnection(url);
+      //
+      statement = connection.createStatement();
 
-      System.out.println("Connection successful!");
+      System.out.println("Connection successful!" + LocalDateTime.now());
 
       // Set a parameter for the prepared statement
-      statement.setBytes(1, rowKey.getBytes());
+      // statement.setBytes(1, rowKey.getBytes());
 
-      System.out.println("Executing query: " + sql);
-      System.out.println("With parameter: " + rowKey);
+      System.out.println(
+          "Executing query: SELECT * FROM " + tableName + " WHERE _key = '" + rowKey + "'");
 
-      try (ResultSet resultSet = statement.executeQuery()) {
-        System.out.println("Query executed successfully.");
-        int columnCount = resultSet.getMetaData().getColumnCount();
-        System.out.println("Result set has " + columnCount + " columns.");
+      rs = statement.executeQuery("SELECT * FROM " + tableName + " WHERE _key = '" + rowKey + "'");
+      System.out.println("Query executed successfully." + LocalDateTime.now());
 
-        while (resultSet.next()) {
-          System.out.println("--- Row ---");
-          for (int i = 1; i <= columnCount; i++) {
-            String columnName = resultSet.getMetaData().getColumnName(i);
-            Object value = resultSet.getObject(i);
-            System.out.println(columnName + ": " + value);
-          }
+      while (rs.next()) {
+        // Integer result = rs.getInt(1);
+        System.out.println("--- Row ---" + LocalDateTime.now());
+        int columnCount = rs.getMetaData().getColumnCount();
+        for (int i = 1; i <= columnCount; i++) {
+          String columnName = rs.getMetaData().getColumnName(i);
+          Object value = rs.getObject(i);
+          System.out.println(columnName + ": " + value);
         }
+        System.out.println("===================" + LocalDateTime.now());
       }
     } catch (SQLException e) {
       System.err.println("An SQL error occurred: " + e.getMessage());
       e.printStackTrace();
+    } finally {
+      try {
+        if (rs != null) {
+          rs.close();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+      try {
+        if (statement != null) {
+          statement.close();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+      try {
+        if (connection != null) {
+          connection.close();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
     }
+
+    System.out.println("DONE!" + LocalDateTime.now());
+    System.exit(0);
   }
 }
