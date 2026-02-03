@@ -44,40 +44,40 @@ public class BigtableResultSetMetaDataTest {
   @Before
   public void setUp() {
     columns = new ArrayList<>();
-    
+
     ColumnMetadata colString = mock(ColumnMetadata.class);
     when(colString.name()).thenReturn("col_string");
-    when(colString.type()).thenReturn((SqlType)SqlType.string());
+    when(colString.type()).thenReturn((SqlType) SqlType.string());
     columns.add(colString);
 
     ColumnMetadata colLong = mock(ColumnMetadata.class);
     when(colLong.name()).thenReturn("col_long");
-    when(colLong.type()).thenReturn((SqlType)SqlType.int64());
+    when(colLong.type()).thenReturn((SqlType) SqlType.int64());
     columns.add(colLong);
 
     ColumnMetadata colDouble = mock(ColumnMetadata.class);
     when(colDouble.name()).thenReturn("col_double");
-    when(colDouble.type()).thenReturn((SqlType)SqlType.float64());
+    when(colDouble.type()).thenReturn((SqlType) SqlType.float64());
     columns.add(colDouble);
 
     ColumnMetadata colBytes = mock(ColumnMetadata.class);
     when(colBytes.name()).thenReturn("col_bytes");
-    when(colBytes.type()).thenReturn((SqlType)SqlType.bytes());
+    when(colBytes.type()).thenReturn((SqlType) SqlType.bytes());
     columns.add(colBytes);
 
     ColumnMetadata colBool = mock(ColumnMetadata.class);
     when(colBool.name()).thenReturn("col_bool");
-    when(colBool.type()).thenReturn((SqlType)SqlType.bool());
+    when(colBool.type()).thenReturn((SqlType) SqlType.bool());
     columns.add(colBool);
 
     ColumnMetadata colTimestamp = mock(ColumnMetadata.class);
     when(colTimestamp.name()).thenReturn("col_timestamp");
-    when(colTimestamp.type()).thenReturn((SqlType)SqlType.timestamp());
+    when(colTimestamp.type()).thenReturn((SqlType) SqlType.timestamp());
     columns.add(colTimestamp);
 
     ColumnMetadata colDate = mock(ColumnMetadata.class);
     when(colDate.name()).thenReturn("col_date");
-    when(colDate.type()).thenReturn((SqlType)SqlType.date());
+    when(colDate.type()).thenReturn((SqlType) SqlType.date());
     columns.add(colDate);
 
     resultSetMetaData = new BigtableResultSetMetaData(columns);

@@ -18,7 +18,6 @@ package com.google.cloud.bigtable.jdbc.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.Serializable;
 import org.junit.Test;
@@ -56,9 +55,7 @@ public class ReflectorTest {
   public void testCreateVerifiedInstance() {
     TestClass instance =
         Reflector.createVerifiedInstance(
-            "com.google.cloud.bigtable.jdbc.util.ReflectorTest$TestClass",
-            TestClass.class,
-            "test");
+            "com.google.cloud.bigtable.jdbc.util.ReflectorTest$TestClass", TestClass.class, "test");
     assertNotNull(instance);
     assertEquals("test", instance.getValue());
   }
@@ -66,9 +63,7 @@ public class ReflectorTest {
   @Test(expected = IllegalArgumentException.class)
   public void testCreateVerifiedInstanceWrongClass() {
     Reflector.createVerifiedInstance(
-        "com.google.cloud.bigtable.jdbc.util.ReflectorTest$TestClass",
-        String.class,
-        "test");
+        "com.google.cloud.bigtable.jdbc.util.ReflectorTest$TestClass", String.class, "test");
   }
 
   @Test

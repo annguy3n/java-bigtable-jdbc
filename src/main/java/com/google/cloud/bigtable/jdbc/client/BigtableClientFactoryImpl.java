@@ -16,13 +16,13 @@
 
 package com.google.cloud.bigtable.jdbc.client;
 
-import java.io.IOException;
 import com.google.api.gax.core.FixedCredentialsProvider;
 import com.google.api.gax.rpc.FixedHeaderProvider;
 import com.google.auth.Credentials;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.bigtable.data.v2.BigtableDataClient;
 import com.google.cloud.bigtable.data.v2.BigtableDataSettings;
+import java.io.IOException;
 
 public class BigtableClientFactoryImpl implements IBigtableClientFactory {
   private Credentials credentials;
@@ -51,12 +51,11 @@ public class BigtableClientFactoryImpl implements IBigtableClientFactory {
     if (host != null && (host.equals("localhost") || host.equals("127.0.0.1")) && port != -1) {
       builder = BigtableDataSettings.newBuilderForEmulator(port);
     } else {
-      builder = BigtableDataSettings.newBuilder()
-          .setCredentialsProvider(FixedCredentialsProvider.create(getCredentials()));
+      builder =
+          BigtableDataSettings.newBuilder()
+              .setCredentialsProvider(FixedCredentialsProvider.create(getCredentials()));
     }
-    builder
-        .setProjectId(projectId)
-        .setInstanceId(instanceId);
+    builder.setProjectId(projectId).setInstanceId(instanceId);
 
     if (appProfileId != null) {
       builder.setAppProfileId(appProfileId);

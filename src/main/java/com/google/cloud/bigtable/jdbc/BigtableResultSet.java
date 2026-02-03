@@ -16,6 +16,9 @@
 
 package com.google.cloud.bigtable.jdbc;
 
+import com.google.cloud.bigtable.data.v2.models.sql.ColumnMetadata;
+import com.google.cloud.bigtable.data.v2.models.sql.ResultSet;
+import com.google.cloud.bigtable.data.v2.models.sql.SqlType;
 import java.io.InputStream;
 import java.io.Reader;
 import java.math.BigDecimal;
@@ -39,9 +42,6 @@ import java.time.Instant;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
-import com.google.cloud.bigtable.data.v2.models.sql.ColumnMetadata;
-import com.google.cloud.bigtable.data.v2.models.sql.ResultSet;
-import com.google.cloud.bigtable.data.v2.models.sql.SqlType;
 
 public class BigtableResultSet implements java.sql.ResultSet {
   // Bigtable data result set is 0 index.

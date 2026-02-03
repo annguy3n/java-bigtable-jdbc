@@ -20,11 +20,12 @@ import static com.google.cloud.bigtable.jdbc.BigtableColumnType.fromSqlType;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import com.google.cloud.bigtable.data.v2.models.sql.SqlType;
 import java.sql.Types;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import com.google.cloud.bigtable.data.v2.models.sql.SqlType;
 
 @RunWith(JUnit4.class)
 public class BigtableColumnTypeTest {
@@ -71,15 +72,17 @@ public class BigtableColumnTypeTest {
     assertEquals(Float.class.getName(), BigtableColumnType.FLOAT32.getJavaClassName());
     assertEquals(Double.class.getName(), BigtableColumnType.FLOAT64.getJavaClassName());
     assertEquals(Boolean.class.getName(), BigtableColumnType.BOOL.getJavaClassName());
-    assertEquals(com.google.protobuf.ByteString.class.getName(),
+    assertEquals(
+        com.google.protobuf.ByteString.class.getName(),
         BigtableColumnType.BYTES.getJavaClassName());
-    assertEquals(com.google.cloud.bigtable.data.v2.models.sql.Struct.class.getName(),
+    assertEquals(
+        com.google.cloud.bigtable.data.v2.models.sql.Struct.class.getName(),
         BigtableColumnType.STRUCT.getJavaClassName());
     assertEquals(java.util.Map.class.getName(), BigtableColumnType.MAP.getJavaClassName());
     assertEquals(com.google.cloud.Date.class.getName(), BigtableColumnType.DATE.getJavaClassName());
     assertEquals(java.util.List.class.getName(), BigtableColumnType.ARRAY.getJavaClassName());
-    assertEquals(java.time.Instant.class.getName(),
-        BigtableColumnType.TIMESTAMP.getJavaClassName());
+    assertEquals(
+        java.time.Instant.class.getName(), BigtableColumnType.TIMESTAMP.getJavaClassName());
     assertEquals(Object.class.getName(), BigtableColumnType.UNKNOWN.getJavaClassName());
   }
 }
