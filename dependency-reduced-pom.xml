@@ -187,6 +187,12 @@
   </build>
   <dependencies>
     <dependency>
+      <groupId>org.checkerframework</groupId>
+      <artifactId>checker-qual</artifactId>
+      <version>3.49.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>com.google.cloud</groupId>
       <artifactId>google-cloud-bigtable-emulator</artifactId>
       <version>0.189.0</version>
@@ -232,14 +238,19 @@
     </dependency>
   </dependencies>
   <properties>
-    <maven.compiler.target>17</maven.compiler.target>
     <maven.compiler.source>17</maven.compiler.source>
+    <mockito.version>3.12.4</mockito.version>
+    <guava.version>33.4.0-jre</guava.version>
+    <jacoco.version>0.8.13</jacoco.version>
+    <maven.compiler.target>17</maven.compiler.target>
+    <google-auth.version>1.33.1</google-auth.version>
+    <google-cloud-core.version>2.52.0</google-cloud-core.version>
+    <protobuf.version>3.25.5</protobuf.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <bigtable.java.emulator.version>0.189.0</bigtable.java.emulator.version>
     <junit.version>4.13.2</junit.version>
-    <mockito.version>3.12.4</mockito.version>
     <bigtable.java.version>2.57.3</bigtable.java.version>
-    <jacoco.version>0.8.13</jacoco.version>
-    <slf4j-reload4j.version>1.7.36</slf4j-reload4j.version>
+    <gax.version>2.62.0</gax.version>
+    <checker-qual.version>3.49.0</checker-qual.version>
   </properties>
 </project>

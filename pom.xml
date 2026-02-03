@@ -32,10 +32,15 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <bigtable.java.version>2.57.3</bigtable.java.version>
     <bigtable.java.emulator.version>0.189.0</bigtable.java.emulator.version>
-    <slf4j-reload4j.version>1.7.36</slf4j-reload4j.version>
     <junit.version>4.13.2</junit.version>
     <mockito.version>3.12.4</mockito.version>
     <jacoco.version>0.8.13</jacoco.version>
+    <google-auth.version>1.33.1</google-auth.version>
+    <gax.version>2.62.0</gax.version>
+    <protobuf.version>3.25.5</protobuf.version>
+    <guava.version>33.4.0-jre</guava.version>
+    <google-cloud-core.version>2.52.0</google-cloud-core.version>
+    <checker-qual.version>3.49.0</checker-qual.version>
   </properties>
 
   <dependencies>
@@ -45,14 +50,40 @@
       <version>${bigtable.java.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.google.api.grpc</groupId>
-      <artifactId>grpc-google-cloud-bigtable-admin-v2</artifactId>
-      <version>${bigtable.java.version}</version>
+      <groupId>com.google.auth</groupId>
+      <artifactId>google-auth-library-credentials</artifactId>
+      <version>${google-auth.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-reload4j</artifactId>
-      <version>${slf4j-reload4j.version}</version>
+      <groupId>com.google.auth</groupId>
+      <artifactId>google-auth-library-oauth2-http</artifactId>
+      <version>${google-auth.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.api</groupId>
+      <artifactId>gax</artifactId>
+      <version>${gax.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+      <version>${protobuf.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${guava.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.cloud</groupId>
+      <artifactId>google-cloud-core</artifactId>
+      <version>${google-cloud-core.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.checkerframework</groupId>
+      <artifactId>checker-qual</artifactId>
+      <version>${checker-qual.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.google.cloud</groupId>
