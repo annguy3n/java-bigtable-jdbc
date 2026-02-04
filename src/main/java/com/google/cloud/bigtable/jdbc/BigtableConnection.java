@@ -71,8 +71,12 @@ public class BigtableConnection implements Connection {
     return new BigtableClientFactoryImpl();
   }
 
-  public BigtableConnection(String url, Properties info, BigtableDataClient dataClient,
-      IBigtableClientFactory bigtableClientFactory) throws SQLException {
+  public BigtableConnection(
+      String url,
+      Properties info,
+      BigtableDataClient dataClient,
+      IBigtableClientFactory bigtableClientFactory)
+      throws SQLException {
     this.bigtableClientFactory = bigtableClientFactory;
     try {
       BigtableJdbcUrlParser.BigtableJdbcUrl parsedUrl = BigtableJdbcUrlParser.parse(url);
@@ -122,8 +126,8 @@ public class BigtableConnection implements Connection {
     String host = properties.getProperty("host");
     int port = Integer.parseInt(properties.getProperty("port", String.valueOf(DEFAULT_PORT)));
 
-    return this.bigtableClientFactory.createBigtableDataClient(projectId, instanceId, appProfileId,
-        host, port);
+    return this.bigtableClientFactory.createBigtableDataClient(
+        projectId, instanceId, appProfileId, host, port);
   }
 
   private void checkClosed() throws SQLException {

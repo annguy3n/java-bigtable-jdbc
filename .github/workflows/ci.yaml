@@ -14,52 +14,131 @@
 # Github action job to test core java library features on
 # downstream client libraries before they are released.
 
-name: CI
-
 on:
   push:
-    branches: [ main ]
+    branches:
+    - main
     paths:
       - src/**
       - pom.xml
+      - .kokoro/**
       - .github/workflows/ci.yaml
   pull_request:
-    branches: [ main ]
     paths:
       - src/**
       - pom.xml
+      - .kokoro/**
       - .github/workflows/ci.yaml
 
-jobs:
-  build:
-    strategy:
-      matrix:
-        java: [ '17', '21', '25' ]
-    runs-on: ubuntu-latest
+name: ci
 
+jobs:
+  units:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        java: [17, 21, 25]
     steps:
     - uses: actions/checkout@v4
-
-    - name: Set up JDK ${{ matrix.java }}
-      uses: actions/setup-java@v4
+    - uses: actions/setup-java@v4
       with:
-        java-version: ${{ matrix.java }}
-        distribution: 'temurin'
-        cache: maven
-
-    - name: Build with Maven
-      run: mvn -B clean verify
-
+        distribution: temurin
+        java-version: ${{matrix.java}}
+    - run: java -version
+    - run: .kokoro/build.sh
+      env:
+        JOB_TYPE: test
     - name: Upload coverage report
       if: matrix.java == '17' && always()
       uses: actions/upload-artifact@v4
       with:
         name: jacoco-report
         path: target/site/jacoco/
-
     - name: Upload shaded jar
       if: matrix.java == '17'
       uses: actions/upload-artifact@v4
       with:
         name: bigtable-jdbc-shaded
         path: target/*-shaded.jar
+
+  windows:
+    runs-on: windows-latest
+    steps:
+    - name: Support longpaths
+      run: git config --system core.longpaths true
+    - uses: actions/checkout@v4
+    - uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: 17
+    - run: java -version
+    - run: .kokoro/build.bat
+      env:
+        JOB_TYPE: test
+
+  dependencies:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [17]
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: ${{matrix.java}}
+    - run: java -version
+    - run: .kokoro/dependencies.sh
+
+  javadoc:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: 17
+    - run: java -version
+    - run: .kokoro/build.sh
+      env:
+        JOB_TYPE: javadoc
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: 17
+    - run: java -version
+    - run: .kokoro/build.sh
+      env:
+        JOB_TYPE: lint
+
+  clirr:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: 17
+    - run: java -version
+    - run: .kokoro/build.sh
+      env:
+        JOB_TYPE: clirr
+
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: 17
+    - run: java -version
+    - run: .kokoro/build.sh
+      env:
+        JOB_TYPE: integration

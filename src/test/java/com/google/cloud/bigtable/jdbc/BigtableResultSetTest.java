@@ -26,6 +26,13 @@ import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import com.google.cloud.bigtable.data.v2.models.sql.ColumnMetadata;
+import com.google.cloud.bigtable.data.v2.models.sql.ResultSet;
+import com.google.cloud.bigtable.data.v2.models.sql.ResultSetMetadata;
+import com.google.cloud.bigtable.data.v2.models.sql.SqlType;
+import com.google.common.collect.ImmutableList;
+import com.google.protobuf.ByteString;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
@@ -37,12 +44,6 @@ import java.util.List;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
-import com.google.cloud.bigtable.data.v2.models.sql.ColumnMetadata;
-import com.google.cloud.bigtable.data.v2.models.sql.ResultSet;
-import com.google.cloud.bigtable.data.v2.models.sql.ResultSetMetadata;
-import com.google.cloud.bigtable.data.v2.models.sql.SqlType;
-import com.google.common.collect.ImmutableList;
-import com.google.protobuf.ByteString;
 
 public class BigtableResultSetTest {
   private ResultSet mockedBigtableResultSet;
@@ -168,7 +169,8 @@ public class BigtableResultSetTest {
     assertEquals(3.14159, resultSet.getDouble("doubleCol"), 0.0);
     assertArrayEquals(bytes, resultSet.getBytes("bytesCol"));
     assertEquals(Timestamp.from(now), resultSet.getTimestamp("timestampCol"));
-    assertEquals(Date.valueOf(now.atZone(java.time.ZoneId.systemDefault()).toLocalDate()),
+    assertEquals(
+        Date.valueOf(now.atZone(java.time.ZoneId.systemDefault()).toLocalDate()),
         resultSet.getDate("dateCol"));
   }
 

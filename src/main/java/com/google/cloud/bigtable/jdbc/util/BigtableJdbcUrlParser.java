@@ -36,8 +36,8 @@ public class BigtableJdbcUrlParser {
   /**
    * Parses a Bigtable JDBC URL string into a BigtableJdbcUrl object.
    *
-   * <p>The expected URL format is:
-   * "jdbc:bigtable:/projects/{projectId}/instances/{instanceId}?param1=val1&param2=val2"
+   * <p>The expected URL format is: {@code
+   * "jdbc:bigtable:/projects/{projectId}/instances/{instanceId}?param1=val1&param2=val2"}
    *
    * @param url The JDBC URL string to parse.
    * @return A BigtableJdbcUrl object containing the project ID, instance ID, and query parameters.
