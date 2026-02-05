@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Google LLC
+ * Copyright 2026 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -17,29 +17,26 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
-/*
- * To run: mvn exec:java -Dexec.mainClass="JdbcExampleBasicWithCreds"
- * -Dexec.args="test-project cred-file-path test-instance test-table"
- */
 public class JdbcExampleBasicWithCreds {
 
   public static void main(String[] args) {
     if (args.length != 4) {
       System.err.println(
-          "Usage: JdbcExampleBasicWithCreds <project_id> <cred_file_path> <instance_id> <table_name>");
+          "Usage: JdbcExampleBasicWithCreds <project_id> <instance_id> <table_id> <cred_file_path>");
       System.exit(1);
     }
     // Replace with your project and instance IDs
     String projectId = args[0];
-    String credFilePath = args[1];
-    String instanceId = args[2];
-    String tableName = args[3]; // Replace with your table name
+    String instanceId = args[1];
+    String tableId = args[2];
+    String credFilePath = args[3];
 
     System.out.println("Project ID: " + projectId);
-    System.out.println("Credential File Path: " + credFilePath);
     System.out.println("Instance ID: " + instanceId);
-    System.out.println("Table Name: " + tableName);
+    System.out.println("Table ID: " + tableId);
+    System.out.println("Credential File Path: " + credFilePath);
 
     String url = String.format("jdbc:bigtable:/projects/%s/instances/%s", projectId, instanceId);
 
@@ -54,11 +51,11 @@ public class JdbcExampleBasicWithCreds {
       return;
     }
 
-    String sql = "SELECT * from " + tableName; // "SELECT * FROM " + tableName + " WHERE _key = ?";
+    String sql = "SELECT * from " + tableId; // "SELECT * FROM " + tableId + " WHERE _key = ?";
 
     // This is a sample service account key. Please replace with your own service account key.
 
-    java.util.Properties info = new java.util.Properties();
+    Properties info = new Properties();
     info.put("credential_file_path", credFilePath);
     try (Connection connection = DriverManager.getConnection(url, info);
         PreparedStatement statement = connection.prepareStatement(sql)) {

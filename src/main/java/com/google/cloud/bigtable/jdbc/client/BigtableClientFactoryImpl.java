@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Google LLC
+ * Copyright 2026 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,8 +40,29 @@ public class BigtableClientFactoryImpl implements IBigtableClientFactory {
           "https-www.googleapis.com/auth/bigtable.admin",
           "https-www.googleapis.com/auth/bigtable.data.readonly");
 
-  public BigtableClientFactoryImpl() throws IOException {
-    this.credentials = GoogleCredentials.getApplicationDefault();
+  public BigtableClientFactoryImpl() {}
+
+  public BigtableClientFactoryImpl(Properties info) throws SQLException {
+    try {
+      if (info.containsKey("credential_json")) {
+        this.credentials =
+            createGoogleCredentialsFromJsonFileContent(info.getProperty("credential_json"));
+      } else if (info.containsKey("credential_file_path")) {
+        this.credentials =
+            GoogleCredentials.fromStream(
+                    Files.newInputStream(Paths.get(info.getProperty("credential_file_path"))))
+                .createScoped(SCOPES);
+      }
+    } catch (IOException e) {
+      throw new SQLException("Failed to load credentials", e);
+    }
+  }
+
+  public static GoogleCredentials createGoogleCredentialsFromJsonFileContent(String json)
+      throws IOException {
+    return GoogleCredentials.fromStream(
+            new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)))
+        .createScoped(SCOPES);
   }
 
   public BigtableClientFactoryImpl(Credentials credentials) {
@@ -75,6 +96,8 @@ public class BigtableClientFactoryImpl implements IBigtableClientFactory {
       builder.setAppProfileId(appProfileId);
     }
 
+    // Disable CSM and internal metrics to avoid OpenTelemetry dependencies which can cause
+    // connection hangs in some environments (e.g. Looker connector).
     builder.stubSettings()
         .setHeaderProvider(FixedHeaderProvider.create("user-agent", "bigtable-jdbc/1.0.0"))
         .setMetricsProvider(NoopMetricsProvider.INSTANCE);

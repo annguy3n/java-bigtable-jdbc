@@ -64,3 +64,9 @@ public class Main {
     ```bash
     mvn exec:java -Dexec.mainClass="com.google.cloud.bigtable.jdbc.example.JdbcExample" -Dexec.args="[PROJECT_ID] [INSTANCE_ID] [TABLE_NAME] [ROW_KEY]"
     ```
+
+    Alternatively, to run the example with a service account key file:
+
+    ```bash
+    mvn exec:java -Dexec.mainClass="JdbcExampleBasicWithCreds" -Dexec.args="[PROJECT_ID] [INSTANCE_ID] [TABLE_ID] [CREDENTIAL_FILE_PATH]"
+    ```
