@@ -21,18 +21,17 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 
 import com.google.auth.Credentials;
+import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.bigtable.data.v2.BigtableDataClient;
 import java.io.IOException;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
-import com.google.auth.oauth2.GoogleCredentials;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.Properties;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
 public class BigtableClientFactoryImplTest {
@@ -66,11 +65,11 @@ public class BigtableClientFactoryImplTest {
   @Test
   public void testConstructorWithCredentialFilePath() throws IOException, SQLException {
     String jsonContent =
-        "{\"client_id\": \"dummy_client_id\",\n" +
-            "  \"client_secret\": \"dummy_client_secret\",\n" +
-            "  \"refresh_token\": \"dummy_refresh_token\",\n" +
-            "  \"type\": \"authorized_user\"\n" +
-            "}";
+        "{\"client_id\": \"dummy_client_id\",\n"
+            + "  \"client_secret\": \"dummy_client_secret\",\n"
+            + "  \"refresh_token\": \"dummy_refresh_token\",\n"
+            + "  \"type\": \"authorized_user\"\n"
+            + "}";
     java.nio.file.Path tempFile =
         Files.write(temporaryFolder.newFile("credentials.json").toPath(), jsonContent.getBytes());
 
@@ -84,11 +83,11 @@ public class BigtableClientFactoryImplTest {
   @Test
   public void testConstructorWithCredentialJsonString() throws SQLException {
     String jsonContent =
-        "{\"client_id\": \"dummy_client_id\",\n" +
-            "  \"client_secret\": \"dummy_client_secret\",\n" +
-            "  \"refresh_token\": \"dummy_refresh_token\",\n" +
-            "  \"type\": \"authorized_user\"\n" +
-            "}";
+        "{\"client_id\": \"dummy_client_id\",\n"
+            + "  \"client_secret\": \"dummy_client_secret\",\n"
+            + "  \"refresh_token\": \"dummy_refresh_token\",\n"
+            + "  \"type\": \"authorized_user\"\n"
+            + "}";
     Properties info = new Properties();
     info.setProperty("credential_json", jsonContent);
 
@@ -113,11 +112,11 @@ public class BigtableClientFactoryImplTest {
   @Test
   public void testCreateGoogleCredentialsFromJsonFileContent() throws IOException {
     String jsonContent =
-        "{\"client_id\": \"dummy_client_id\",\n" +
-            "  \"client_secret\": \"dummy_client_secret\",\n" +
-            "  \"refresh_token\": \"dummy_refresh_token\",\n" +
-            "  \"type\": \"authorized_user\"\n" +
-            "}";
+        "{\"client_id\": \"dummy_client_id\",\n"
+            + "  \"client_secret\": \"dummy_client_secret\",\n"
+            + "  \"refresh_token\": \"dummy_refresh_token\",\n"
+            + "  \"type\": \"authorized_user\"\n"
+            + "}";
     GoogleCredentials credentials =
         BigtableClientFactoryImpl.createGoogleCredentialsFromJsonFileContent(jsonContent);
     assertNotNull(credentials);
@@ -227,11 +226,11 @@ public class BigtableClientFactoryImplTest {
   @Test
   public void testCredentialPropertyPrecedence() throws IOException, SQLException {
     String jsonContent =
-        "{\"client_id\": \"dummy_client_id\",\n" +
-            "  \"client_secret\": \"dummy_client_secret\",\n" +
-            "  \"refresh_token\": \"dummy_refresh_token\",\n" +
-            "  \"type\": \"authorized_user\"\n" +
-            "}";
+        "{\"client_id\": \"dummy_client_id\",\n"
+            + "  \"client_secret\": \"dummy_client_secret\",\n"
+            + "  \"refresh_token\": \"dummy_refresh_token\",\n"
+            + "  \"type\": \"authorized_user\"\n"
+            + "}";
     java.nio.file.Path tempFile =
         Files.write(temporaryFolder.newFile("credentials.json").toPath(), jsonContent.getBytes());
 

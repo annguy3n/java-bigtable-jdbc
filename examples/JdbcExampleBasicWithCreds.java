@@ -24,7 +24,8 @@ public class JdbcExampleBasicWithCreds {
   public static void main(String[] args) {
     if (args.length != 4) {
       System.err.println(
-          "Usage: JdbcExampleBasicWithCreds <project_id> <instance_id> <table_id> <cred_file_path>");
+          "Usage: JdbcExampleBasicWithCreds <project_id> <instance_id> <table_id>"
+              + " <cred_file_path>");
       System.exit(1);
     }
     // Replace with your project and instance IDs

@@ -556,8 +556,10 @@ public class BigtableConnectionTest {
 
   @Test
   public void testEmptyURL() {
-    assertThrows(SQLException.class, () -> {
-      new BigtableConnection("", properties, null);
-    });
+    assertThrows(
+        SQLException.class,
+        () -> {
+          new BigtableConnection("", properties, null);
+        });
   }
 }

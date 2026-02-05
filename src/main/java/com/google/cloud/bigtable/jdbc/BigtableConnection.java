@@ -16,6 +16,10 @@
 
 package com.google.cloud.bigtable.jdbc;
 
+import com.google.cloud.bigtable.data.v2.BigtableDataClient;
+import com.google.cloud.bigtable.jdbc.client.BigtableClientFactoryImpl;
+import com.google.cloud.bigtable.jdbc.client.IBigtableClientFactory;
+import com.google.cloud.bigtable.jdbc.util.BigtableJdbcUrlParser;
 import java.io.IOException;
 import java.sql.Array;
 import java.sql.Blob;
@@ -41,10 +45,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Executor;
-import com.google.cloud.bigtable.data.v2.BigtableDataClient;
-import com.google.cloud.bigtable.jdbc.client.BigtableClientFactoryImpl;
-import com.google.cloud.bigtable.jdbc.client.IBigtableClientFactory;
-import com.google.cloud.bigtable.jdbc.util.BigtableJdbcUrlParser;
 
 public class BigtableConnection implements Connection {
   private final int DEFAULT_PORT = 443;
@@ -53,8 +53,10 @@ public class BigtableConnection implements Connection {
   // The actual client, responsible for operations and communicates with Bigtable.
   private final BigtableDataClient client;
   private boolean isClosed = false;
-  private static final Set<String> SUPPORTED_KEYS = new HashSet<>(Arrays.asList("app_profile_id",
-      "universe_domain", "credential_file_path", "credential_json"));
+  private static final Set<String> SUPPORTED_KEYS =
+      new HashSet<>(
+          Arrays.asList(
+              "app_profile_id", "universe_domain", "credential_file_path", "credential_json"));
   private final IBigtableClientFactory bigtableClientFactory;
   private SQLWarning warnings;
 
@@ -335,8 +337,8 @@ public class BigtableConnection implements Connection {
   }
 
   @Override
-  public Statement createStatement(int resultSetType, int resultSetConcurrency,
-      int resultSetHoldability) throws SQLException {
+  public Statement createStatement(
+      int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
     checkClosed();
     if (resultSetType != ResultSet.TYPE_FORWARD_ONLY) {
       throw new SQLFeatureNotSupportedException("Only TYPE_FORWARD_ONLY is supported");
@@ -351,8 +353,9 @@ public class BigtableConnection implements Connection {
   }
 
   @Override
-  public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency,
-      int resultSetHoldability) throws SQLException {
+  public PreparedStatement prepareStatement(
+      String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability)
+      throws SQLException {
     checkClosed();
     if (resultSetType != ResultSet.TYPE_FORWARD_ONLY) {
       throw new SQLFeatureNotSupportedException("Only TYPE_FORWARD_ONLY is supported");
@@ -367,8 +370,9 @@ public class BigtableConnection implements Connection {
   }
 
   @Override
-  public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency,
-      int resultSetHoldability) throws SQLException {
+  public CallableStatement prepareCall(
+      String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability)
+      throws SQLException {
 
     throw new SQLFeatureNotSupportedException("prepareCall is not supported");
   }

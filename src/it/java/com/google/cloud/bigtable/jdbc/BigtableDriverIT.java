@@ -20,6 +20,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import com.google.cloud.bigtable.emulator.v2.BigtableEmulatorRule;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.sql.Connection;
@@ -33,7 +35,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import com.google.cloud.bigtable.emulator.v2.BigtableEmulatorRule;
 
 @RunWith(JUnit4.class)
 public class BigtableDriverIT {
@@ -56,7 +57,6 @@ public class BigtableDriverIT {
   static final long NOW = 5_000_000_000L;
   static final long LATER = NOW + 1_000L;
 
-
   private static byte[] booleanToByteArray(boolean bool) {
     return ByteBuffer.allocate(1).put(bool ? (byte) 1 : (byte) 0).array();
   }
@@ -71,17 +71,17 @@ public class BigtableDriverIT {
 
   private static void writeRow(String key, String table) {
     emulatorWrapper.writeRow(key, table, FAMILY_TEST, BOOL_COLUMN, booleanToByteArray(true), NOW);
-    emulatorWrapper.writeRow(key, table, FAMILY_TEST, BOOL_COLUMN, booleanToByteArray(false),
-        LATER);
-    emulatorWrapper.writeRow(key, table, FAMILY_TEST, STRING_COLUMN, "string1".getBytes(UTF_8),
-        NOW);
-    emulatorWrapper.writeRow(key, table, FAMILY_TEST, STRING_COLUMN, "string2".getBytes(UTF_8),
-        LATER);
+    emulatorWrapper.writeRow(
+        key, table, FAMILY_TEST, BOOL_COLUMN, booleanToByteArray(false), LATER);
+    emulatorWrapper.writeRow(
+        key, table, FAMILY_TEST, STRING_COLUMN, "string1".getBytes(UTF_8), NOW);
+    emulatorWrapper.writeRow(
+        key, table, FAMILY_TEST, STRING_COLUMN, "string2".getBytes(UTF_8), LATER);
     emulatorWrapper.writeRow(key, table, FAMILY_TEST, LONG_COLUMN, longToByteArray(1L), NOW);
     emulatorWrapper.writeRow(key, table, FAMILY_TEST, LONG_COLUMN, longToByteArray(2L), LATER);
     emulatorWrapper.writeRow(key, table, FAMILY_TEST, DOUBLE_COLUMN, doubleToByteArray(1.10), NOW);
-    emulatorWrapper.writeRow(key, table, FAMILY_TEST, DOUBLE_COLUMN, doubleToByteArray(2.20),
-        LATER);
+    emulatorWrapper.writeRow(
+        key, table, FAMILY_TEST, DOUBLE_COLUMN, doubleToByteArray(2.20), LATER);
   }
 
   @BeforeClass
@@ -98,8 +98,10 @@ public class BigtableDriverIT {
   @Test
   public void testValidConnection() throws Exception {
     Class.forName("com.google.cloud.bigtable.jdbc.BigtableDriver");
-    String url = String.format("jdbc:bigtable://localhost:%d/projects/%s/instances/%s",
-        BIGTABLE_EMULATOR.getPort(), PROJECT, INSTANCE);
+    String url =
+        String.format(
+            "jdbc:bigtable://localhost:%d/projects/%s/instances/%s",
+            BIGTABLE_EMULATOR.getPort(), PROJECT, INSTANCE);
     try (Connection connection = DriverManager.getConnection(url)) {
       assertTrue(connection.isValid(0));
     }
@@ -108,8 +110,10 @@ public class BigtableDriverIT {
   @Test
   public void testInvalidConnection() throws Exception {
     Class.forName("com.google.cloud.bigtable.jdbc.BigtableDriver");
-    String url = String.format("jdbc:bigtable://localhost:%d/projects/%s/instances/%s",
-        BIGTABLE_EMULATOR.getPort(), "bogus-project", "bogus-instance");
+    String url =
+        String.format(
+            "jdbc:bigtable://localhost:%d/projects/%s/instances/%s",
+            BIGTABLE_EMULATOR.getPort(), "bogus-project", "bogus-instance");
     try (Connection connection = DriverManager.getConnection(url)) {
       // Known issue: Bigtable cannot now whether a connection is established unless
       // a table name is specified. The check would leverage `sampleRowKeys(tableId)`, which will
@@ -121,10 +125,14 @@ public class BigtableDriverIT {
   }
 
   @Test
-  @Ignore("Enable this test after Emulator supports PreparedQuery https://github.com/googleapis/google-cloud-go/issues/12049.")
+  @Ignore(
+      "Enable this test after Emulator supports PreparedQuery"
+          + " https://github.com/googleapis/google-cloud-go/issues/12049.")
   public void testSelectStatement() throws Exception {
-    String url = String.format("jdbc:bigtable://localhost:%d/projects/%s/instances/%s",
-        BIGTABLE_EMULATOR.getPort(), PROJECT, INSTANCE);
+    String url =
+        String.format(
+            "jdbc:bigtable://localhost:%d/projects/%s/instances/%s",
+            BIGTABLE_EMULATOR.getPort(), PROJECT, INSTANCE);
     String tableName = "test-table";
     String select = String.format("SELECT * FROM `%s` WHERE _key = ?", tableName);
 
