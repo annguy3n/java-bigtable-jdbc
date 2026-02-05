@@ -23,6 +23,7 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.bigtable.data.v2.BigtableDataClient;
 import com.google.cloud.bigtable.data.v2.BigtableDataSettings;
 import com.google.cloud.bigtable.data.v2.stub.metrics.NoopMetricsProvider;
+import com.google.common.annotations.VisibleForTesting;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -35,7 +36,9 @@ import java.util.Properties;
 
 public class BigtableClientFactoryImpl implements IBigtableClientFactory {
   private Credentials credentials;
-  private static final List<String> SCOPES =
+
+  @VisibleForTesting
+  static final List<String> SCOPES =
       Arrays.asList(
           "https://www.googleapis.com/auth/cloud-platform",
           "https://www.googleapis.com/auth/bigtable.admin",

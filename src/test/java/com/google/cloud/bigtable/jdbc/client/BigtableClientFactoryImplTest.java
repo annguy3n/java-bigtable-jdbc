@@ -25,7 +25,6 @@ import com.google.auth.Credentials;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.bigtable.data.v2.BigtableDataClient;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.List;
@@ -126,11 +125,8 @@ public class BigtableClientFactoryImplTest {
   }
 
   @Test
-  @SuppressWarnings("unchecked")
-  public void testScopesAreCorrect() throws Exception {
-    Field scopesField = BigtableClientFactoryImpl.class.getDeclaredField("SCOPES");
-    scopesField.setAccessible(true);
-    List<String> scopes = (List<String>) scopesField.get(null);
+  public void testScopesAreCorrect() {
+    List<String> scopes = BigtableClientFactoryImpl.SCOPES;
 
     assertNotNull(scopes);
     assertEquals(3, scopes.size());
