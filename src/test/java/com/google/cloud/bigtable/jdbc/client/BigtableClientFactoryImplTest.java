@@ -18,14 +18,17 @@ package com.google.cloud.bigtable.jdbc.client;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import com.google.auth.Credentials;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.bigtable.data.v2.BigtableDataClient;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Properties;
 import org.junit.Rule;
 import org.junit.Test;
@@ -120,6 +123,25 @@ public class BigtableClientFactoryImplTest {
     GoogleCredentials credentials =
         BigtableClientFactoryImpl.createGoogleCredentialsFromJsonFileContent(jsonContent);
     assertNotNull(credentials);
+  }
+
+  @Test
+  @SuppressWarnings("unchecked")
+  public void testScopesAreCorrect() throws Exception {
+    Field scopesField = BigtableClientFactoryImpl.class.getDeclaredField("SCOPES");
+    scopesField.setAccessible(true);
+    List<String> scopes = (List<String>) scopesField.get(null);
+
+    assertNotNull(scopes);
+    assertEquals(3, scopes.size());
+    assertTrue(scopes.contains("https://www.googleapis.com/auth/cloud-platform"));
+    assertTrue(scopes.contains("https://www.googleapis.com/auth/bigtable.admin"));
+    assertTrue(scopes.contains("https://www.googleapis.com/auth/bigtable.data.readonly"));
+
+    // Ensure no dashes in the protocol part which caused the refresh error
+    for (String scope : scopes) {
+      assertTrue("Scope should start with https://", scope.startsWith("https://"));
+    }
   }
 
   @Test

@@ -37,9 +37,9 @@ public class BigtableClientFactoryImpl implements IBigtableClientFactory {
   private Credentials credentials;
   private static final List<String> SCOPES =
       Arrays.asList(
-          "https-www.googleapis.com/auth/cloud-platform",
-          "https-www.googleapis.com/auth/bigtable.admin",
-          "https-www.googleapis.com/auth/bigtable.data.readonly");
+          "https://www.googleapis.com/auth/cloud-platform",
+          "https://www.googleapis.com/auth/bigtable.admin",
+          "https://www.googleapis.com/auth/bigtable.data.readonly");
 
   public BigtableClientFactoryImpl() {}
 
