@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Google LLC
+ * Copyright 2026 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,9 @@ public class BigtableConnection implements Connection {
   private final BigtableDataClient client;
   private boolean isClosed = false;
   private static final Set<String> SUPPORTED_KEYS =
-      new HashSet<>(Arrays.asList("app_profile_id", "universe_domain"));
+      new HashSet<>(
+          Arrays.asList(
+              "app_profile_id", "universe_domain", "credential_file_path", "credential_json"));
   private final IBigtableClientFactory bigtableClientFactory;
   private SQLWarning warnings;
 
@@ -64,11 +66,11 @@ public class BigtableConnection implements Connection {
 
   public BigtableConnection(String url, Properties info, BigtableDataClient dataClient)
       throws SQLException {
-    this(url, info, dataClient, createClientFactory());
+    this(url, info, dataClient, createClientFactory(info));
   }
 
-  private static IBigtableClientFactory createClientFactory() throws SQLException {
-    return new BigtableClientFactoryImpl();
+  private static IBigtableClientFactory createClientFactory(Properties info) {
+    return new BigtableClientFactoryImpl(info);
   }
 
   public BigtableConnection(
@@ -371,6 +373,7 @@ public class BigtableConnection implements Connection {
   public CallableStatement prepareCall(
       String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability)
       throws SQLException {
+
     throw new SQLFeatureNotSupportedException("prepareCall is not supported");
   }
 

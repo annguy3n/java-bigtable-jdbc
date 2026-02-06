@@ -15,10 +15,6 @@
 
 package com.google.cloud.bigtable.jdbc;
 
-import java.io.IOException;
-import java.io.Serializable;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import com.google.api.gax.core.FixedCredentialsProvider;
 import com.google.api.gax.rpc.FixedHeaderProvider;
 import com.google.auth.Credentials;
 import com.google.cloud.bigtable.admin.v2.BigtableTableAdminClient;
@@ -28,49 +24,69 @@ import com.google.cloud.bigtable.data.v2.BigtableDataClient;
 import com.google.cloud.bigtable.data.v2.BigtableDataSettings;
 import com.google.cloud.bigtable.data.v2.models.RowMutation;
 import com.google.protobuf.ByteString;
+import java.io.IOException;
+import java.io.Serializable;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 class BigtableEmulatorClientWrapper implements Serializable {
-    private final BigtableTableAdminClient tableAdminClient;
-    private final BigtableDataClient dataClient;
+  private final BigtableTableAdminClient tableAdminClient;
+  private final BigtableDataClient dataClient;
 
-    BigtableEmulatorClientWrapper(String project, String instanceId, @Nullable Integer emulatorPort,
-            @Nullable Credentials gcpCredentials) throws IOException {
-        BigtableDataSettings.Builder settings = BigtableDataSettings
-                .newBuilderForEmulator(emulatorPort).setProjectId(project).setInstanceId(instanceId);
+  BigtableEmulatorClientWrapper(
+      String project,
+      String instanceId,
+      @Nullable Integer emulatorPort,
+      @Nullable Credentials gcpCredentials)
+      throws IOException {
+    BigtableDataSettings.Builder settings =
+        BigtableDataSettings.newBuilderForEmulator(emulatorPort)
+            .setProjectId(project)
+            .setInstanceId(instanceId);
 
-        settings.stubSettings()
-                .setHeaderProvider(FixedHeaderProvider.create("user-agent", "bigtable-jdbc/1.0.0"));
-        dataClient = BigtableDataClient.create(settings.build());
-        BigtableTableAdminSettings tableSettings =
-                BigtableTableAdminSettings.newBuilderForEmulator(emulatorPort).setProjectId(project)
-                        .setInstanceId(instanceId).build();
-        tableAdminClient = BigtableTableAdminClient.create(tableSettings);
-    }
+    settings
+        .stubSettings()
+        .setHeaderProvider(FixedHeaderProvider.create("user-agent", "bigtable-jdbc/1.0.0"));
+    dataClient = BigtableDataClient.create(settings.build());
+    BigtableTableAdminSettings tableSettings =
+        BigtableTableAdminSettings.newBuilderForEmulator(emulatorPort)
+            .setProjectId(project)
+            .setInstanceId(instanceId)
+            .build();
+    tableAdminClient = BigtableTableAdminClient.create(tableSettings);
+  }
 
-    void createTable(String tableName, String familyName) {
-        CreateTableRequest createTableRequest =
-                CreateTableRequest.of(tableName).addFamily(familyName);
-        tableAdminClient.createTable(createTableRequest);
-    }
+  void createTable(String tableName, String familyName) {
+    CreateTableRequest createTableRequest = CreateTableRequest.of(tableName).addFamily(familyName);
+    tableAdminClient.createTable(createTableRequest);
+  }
 
-    void writeRow(String key, String table, String familyColumn, String columnQualifier,
-            byte[] value, long timestampMicros) {
-        RowMutation rowMutation = RowMutation.create(table, key).setCell(familyColumn,
-                ByteString.copyFromUtf8(columnQualifier), timestampMicros,
+  void writeRow(
+      String key,
+      String table,
+      String familyColumn,
+      String columnQualifier,
+      byte[] value,
+      long timestampMicros) {
+    RowMutation rowMutation =
+        RowMutation.create(table, key)
+            .setCell(
+                familyColumn,
+                ByteString.copyFromUtf8(columnQualifier),
+                timestampMicros,
                 ByteString.copyFrom(value));
-        dataClient.mutateRow(rowMutation);
-    }
+    dataClient.mutateRow(rowMutation);
+  }
 
-    void deleteTable(String tableId) {
-        tableAdminClient.deleteTable(tableId);
-    }
+  void deleteTable(String tableId) {
+    tableAdminClient.deleteTable(tableId);
+  }
 
-    boolean exists(String tableId) {
-        return dataClient.sampleRowKeys(tableId).size() > 0;
-    }
+  boolean exists(String tableId) {
+    return dataClient.sampleRowKeys(tableId).size() > 0;
+  }
 
-    void closeSession() throws IOException {
-        dataClient.close();
-        tableAdminClient.close();
-    }
+  void closeSession() throws IOException {
+    dataClient.close();
+    tableAdminClient.close();
+  }
 }
