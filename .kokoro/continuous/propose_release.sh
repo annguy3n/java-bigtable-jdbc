@@ -20,10 +20,8 @@ export NPM_CONFIG_PREFIX=/home/node/.npm-global
 
 if [ -f ${KOKORO_KEYSTORE_DIR}/73713_github-magic-proxy-url-release-please ]; then
   # Groom the release PR as new commits are merged.
-  npx release-please release-pr --token=${KOKORO_KEYSTORE_DIR}/73713_github-magic-proxy-token-release-please \
+  npx release-please manifest-pr --token=${KOKORO_KEYSTORE_DIR}/73713_github-magic-proxy-token-release-please \
     --repo-url=GoogleCloudPlatform/java-bigtable-jdbc \
-    --package-name="java-bigtable-jdbc" \
     --api-url=${KOKORO_KEYSTORE_DIR}/73713_github-magic-proxy-url-release-please \
-    --proxy-key=${KOKORO_KEYSTORE_DIR}/73713_github-magic-proxy-key-release-please \
-    --release-type=java-yoshi
+    --proxy-key=${KOKORO_KEYSTORE_DIR}/73713_github-magic-proxy-key-release-please
 fi

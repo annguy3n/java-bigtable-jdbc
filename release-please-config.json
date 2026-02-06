@@ -3,7 +3,10 @@
     ".": {
       "release-type": "java-yoshi",
       "package-name": "google-cloud-bigtable-jdbc",
-      "changelog-path": "CHANGELOG.md"
+      "changelog-path": "CHANGELOG.md",
+      "extra-files": [
+        "versions.txt"
+      ]
     }
   },
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
