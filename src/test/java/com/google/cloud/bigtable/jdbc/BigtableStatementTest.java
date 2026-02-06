@@ -120,7 +120,7 @@ public class BigtableStatementTest {
         org.mockito.Mockito.mock(BoundStatement.Builder.class);
     BoundStatement mockBoundStatement = org.mockito.Mockito.mock(BoundStatement.class);
 
-    when(mockDataClient.prepareStatement(SQL, null)).thenReturn(mockPreparedStatement);
+    when(mockDataClient.prepareStatement(Mockito.anyString(), Mockito.any())).thenReturn(mockPreparedStatement);
     when(mockPreparedStatement.bind()).thenReturn(mockBoundStatementBuilder);
     when(mockBoundStatementBuilder.build()).thenReturn(mockBoundStatement);
     when(mockDataClient.executeQuery(mockBoundStatement)).thenReturn(mockResultSet);
@@ -160,7 +160,7 @@ public class BigtableStatementTest {
         org.mockito.Mockito.mock(BoundStatement.Builder.class);
     BoundStatement mockBoundStatement = org.mockito.Mockito.mock(BoundStatement.class);
 
-    when(mockDataClient.prepareStatement(SQL, null)).thenReturn(mockPreparedStatement);
+    when(mockDataClient.prepareStatement(Mockito.anyString(), Mockito.any())).thenReturn(mockPreparedStatement);
     when(mockPreparedStatement.bind()).thenReturn(mockBoundStatementBuilder);
     when(mockBoundStatementBuilder.build()).thenReturn(mockBoundStatement);
     when(mockDataClient.executeQuery(mockBoundStatement)).thenReturn(mockResultSet);
@@ -172,7 +172,7 @@ public class BigtableStatementTest {
 
   @Test
   public void testExecuteQueryWithDml() {
-    when(mockDataClient.prepareStatement("INSERT INTO table VALUES (1)", null))
+    when(mockDataClient.prepareStatement(Mockito.anyString(), Mockito.any()))
         .thenThrow(new IllegalArgumentException());
     BigtableStatement statement = createStatement();
     assertThrows(
@@ -182,7 +182,7 @@ public class BigtableStatementTest {
 
   @Test
   public void testExecuteWithDml() {
-    when(mockDataClient.prepareStatement("INSERT INTO table VALUES (1)", null))
+    when(mockDataClient.prepareStatement(Mockito.anyString(), Mockito.any()))
         .thenThrow(new IllegalArgumentException());
     BigtableStatement statement = createStatement();
     assertThrows(
@@ -304,7 +304,7 @@ public class BigtableStatementTest {
         org.mockito.Mockito.mock(BoundStatement.Builder.class);
     BoundStatement mockBoundStatement = org.mockito.Mockito.mock(BoundStatement.class);
 
-    when(mockDataClient.prepareStatement(SQL, null)).thenReturn(mockPreparedStatement);
+    when(mockDataClient.prepareStatement(Mockito.anyString(), Mockito.any())).thenReturn(mockPreparedStatement);
     when(mockPreparedStatement.bind()).thenReturn(mockBoundStatementBuilder);
     when(mockBoundStatementBuilder.build()).thenReturn(mockBoundStatement);
     when(mockDataClient.executeQuery(mockBoundStatement)).thenReturn(mockResultSet);
@@ -312,6 +312,26 @@ public class BigtableStatementTest {
     BigtableStatement statement = createStatement();
     java.sql.ResultSet resultSet = statement.executeQuery(SQL);
     assertNotNull(resultSet);
+  }
+
+  @Test
+  public void testExecuteQueryWithImmutableMap() throws SQLException {
+    com.google.cloud.bigtable.data.v2.models.sql.PreparedStatement mockPreparedStatement =
+        org.mockito.Mockito.mock(
+            com.google.cloud.bigtable.data.v2.models.sql.PreparedStatement.class);
+    BoundStatement.Builder mockBoundStatementBuilder =
+        org.mockito.Mockito.mock(BoundStatement.Builder.class);
+    BoundStatement mockBoundStatement = org.mockito.Mockito.mock(BoundStatement.class);
+
+    when(mockDataClient.prepareStatement(Mockito.anyString(), Mockito.any())).thenReturn(mockPreparedStatement);
+    when(mockPreparedStatement.bind()).thenReturn(mockBoundStatementBuilder);
+    when(mockBoundStatementBuilder.build()).thenReturn(mockBoundStatement);
+    when(mockDataClient.executeQuery(mockBoundStatement)).thenReturn(mockResultSet);
+
+    BigtableStatement statement = createStatement();
+    statement.executeQuery(SQL);
+
+    Mockito.verify(mockDataClient).prepareStatement(Mockito.anyString(), Mockito.eq(com.google.common.collect.ImmutableMap.of()));
   }
 
   @Test
