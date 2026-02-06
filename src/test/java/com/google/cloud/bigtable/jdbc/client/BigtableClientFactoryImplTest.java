@@ -26,7 +26,6 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.bigtable.data.v2.BigtableDataClient;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 import org.junit.Rule;
