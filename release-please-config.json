@@ -2,7 +2,6 @@
   "packages": {
     ".": {
       "release-type": "java-yoshi",
-      "package-name": "google-cloud-bigtable-jdbc",
       "changelog-path": "CHANGELOG.md",
       "extra-files": [
         "versions.txt"
