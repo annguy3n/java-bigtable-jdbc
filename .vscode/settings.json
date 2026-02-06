@@ -2,7 +2,7 @@
     "java.compile.nullAnalysis.mode": "automatic",
     "files.trimTrailingWhitespace": true,
     "[java]": {
-        "editor.defaultFormatter": "redhat.java",
+        "editor.defaultFormatter": "google.google-java-format",
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
             "source.organizeImports": "explicit"

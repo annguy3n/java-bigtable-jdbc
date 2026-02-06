@@ -171,7 +171,8 @@ public class BigtableJdbcUrlParser {
     @Override
     public String toString() {
       return String.format(
-          "BigtableJdbcUrl{projectId='%s', instanceId='%s', host='%s', port=%d, queryParameters=%s}",
+          "BigtableJdbcUrl{projectId='%s', instanceId='%s', host='%s', port=%d,"
+              + " queryParameters=%s}",
           projectId, instanceId, host, port, queryParameters);
     }
   }
