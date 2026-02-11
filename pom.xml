@@ -45,7 +45,7 @@
     <bigtable.java.emulator.version>0.189.0</bigtable.java.emulator.version>
     <junit.version>4.13.2</junit.version>
     <mockito.version>3.12.4</mockito.version>
-    <jacoco.version>0.8.13</jacoco.version>
+    <jacoco.version>0.8.14</jacoco.version>
     <google-auth.version>1.33.1</google-auth.version>
     <gax.version>2.62.0</gax.version>
     <protobuf.version>3.25.5</protobuf.version>
