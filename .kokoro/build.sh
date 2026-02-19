@@ -58,19 +58,17 @@ lint)
 javadoc)
     mvn javadoc:javadoc javadoc:test-javadoc -B -ntp
     RETURN_CODE=$?
-    ;;
-integration)
     mvn -B ${INTEGRATION_TEST_ARGS} \
       -ntp \
       -Penable-integration-tests \
-      -Dgoogle.bigtable.project.id="${GOOGLE_CLOUD_PROJECT}" \
-      -Dgoogle.bigtable.instance.id="${BIGTABLE_INSTANCE}" \
       -DtrimStackTrace=false \
       -Dclirr.skip=true \
       -Denforcer.skip=true \
       -Dcheckstyle.skip=true \
       -DskipUnitTests=true \
       -Dfmt.skip=true \
+      -Dmaven.javadoc.skip=true \
+      -Djacoco.skip=true \
       -fae \
       verify
     RETURN_CODE=$?
