@@ -155,7 +155,11 @@ public class BigtableResultSetTest {
     when(mockedBigtableResultSet.getBytes(8)).thenReturn(ByteString.copyFrom(bytes));
     Instant now = Instant.now();
     when(mockedBigtableResultSet.getTimestamp(9)).thenReturn(now);
-    when(mockedBigtableResultSet.getTimestamp(10)).thenReturn(now);
+    java.time.ZonedDateTime zdt = now.atZone(java.time.ZoneId.systemDefault());
+    com.google.cloud.Date cloudDate =
+        com.google.cloud.Date.fromYearMonthDay(
+            zdt.getYear(), zdt.getMonthValue(), zdt.getDayOfMonth());
+    when(mockedBigtableResultSet.getDate(10)).thenReturn(cloudDate);
 
     assertTrue(resultSet.next());
 
