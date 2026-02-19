@@ -52,7 +52,7 @@ test)
     RETURN_CODE=$?
     ;;
 lint)
-    mvn com.spotify.fmt:fmt-maven-plugin:check
+    mvn checkstyle:check -Pformat
     RETURN_CODE=$?
     ;;
 javadoc)
