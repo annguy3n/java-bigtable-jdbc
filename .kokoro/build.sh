@@ -29,7 +29,7 @@ echo ${JOB_TYPE}
 
 # attempt to install 3 times with exponential backoff (starting with 10 seconds)
 retry_with_backoff 3 10 \
-  mvn install -B -V -ntp -q \
+  mvn install -B -V -ntp \
     -DskipTests=true \
     -Dclirr.skip=true \
     -Denforcer.skip=true \
@@ -52,22 +52,21 @@ test)
     RETURN_CODE=$?
     ;;
 lint)
-    mvn com.spotify.fmt:fmt-maven-plugin:check
+    mvn checkstyle:check -Pformat
     RETURN_CODE=$?
     ;;
 javadoc)
     mvn javadoc:javadoc javadoc:test-javadoc -B -ntp
     RETURN_CODE=$?
-    ;;
-integration)
     mvn -B ${INTEGRATION_TEST_ARGS} \
       -ntp \
-      -Dtest=BigtableDriverIT \
       -DtrimStackTrace=false \
       -Dclirr.skip=true \
       -Denforcer.skip=true \
+      -Dcheckstyle.skip=true \
+      -DskipUnitTests=true \
+      -Dfmt.skip=true \
       -Dmaven.javadoc.skip=true \
-      -Dgcloud.download.skip=true \
       -Djacoco.skip=true \
       -fae \
       verify
