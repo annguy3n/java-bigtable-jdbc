@@ -1,5 +1,7 @@
 # Bigtable JDBC
 
+[![ci](https://github.com/GoogleCloudPlatform/java-bigtable-jdbc/actions/workflows/ci.yaml/badge.svg)](https://github.com/GoogleCloudPlatform/java-bigtable-jdbc/actions/workflows/ci.yaml)
+
 `bigtable-jdbc` is a [JDBC Driver](https://docs.oracle.com/javase/8/docs/technotes/guides/jdbc/) for [Google Bigtable](https://cloud.google.com/bigtable?hl=en).
 
 You can create a JDBC connection easily for a variety of authentication types. For instance for an accessTokenProviderFQCN in connection URL:
