@@ -18,7 +18,7 @@
 
   <groupId>com.google.cloud</groupId>
   <artifactId>google-cloud-bigtable-jdbc-samples</artifactId>
-  <version>0.1.0</version>
+  <version>1.0.0</version>
   <name>Google Cloud Bigtable JDBC Samples</name>
   <description>Samples for Google Cloud Bigtable JDBC Driver</description>
 
@@ -32,7 +32,7 @@
     <dependency>
       <groupId>com.google.cloud</groupId>
       <artifactId>google-cloud-bigtable-jdbc</artifactId>
-      <version>0.2.0</version><!-- {x-version-update:google-cloud-bigtable-jdbc:current} -->
+      <version>1.0.0</version><!-- {x-version-update:google-cloud-bigtable-jdbc:current} -->
     </dependency>
   </dependencies>
 
