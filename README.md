@@ -6,16 +6,19 @@
 
 ## Getting Started
 
-Add the driver to your project dependencies. It is recommended to use the [shaded jar](#shaded-artifact) to avoid dependency conflicts.
+Add the driver to your project dependencies.
 
 ```xml
 <dependency>
-  <groupId>com.google.cloud</groupId>
-  <artifactId>google-cloud-bigtable-jdbc</artifactId>
-  <version>0.1.1-SNAPSHOT</version>
-  <classifier>shaded</classifier>
+    <groupId>com.google.cloud</groupId>
+    <artifactId>google-cloud-bigtable-jdbc</artifactId>
+    <version>1.0.0</version>
 </dependency>
 ```
+
+### Maven
+
+Repository is located at [Maven Central Repository](https://central.sonatype.com/artifact/com.google.cloud/google-cloud-bigtable-jdbc)
 
 ### Usage Example
 
